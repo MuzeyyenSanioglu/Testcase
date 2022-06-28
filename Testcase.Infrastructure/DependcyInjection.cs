@@ -21,9 +21,11 @@ namespace Testcase.Infrastructure
             services.AddSingleton<IUserDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserDataBaseSettings>>().Value);
             #endregion
 
-            services.AddSingleton<IPasswordHashing, BcryptPasswordHashing>();
-            services.AddScoped<ITokenHandler, JWTHandler>();
+            
+
             #region ProjectDependencies
+           
+            services.AddTransient<IPasswordHashing, BcryptPasswordHashing>();
             services.AddTransient<IUserContext, UserContext>();
             services.AddTransient<IUserRepository, UserRepository>(); 
             #endregion

@@ -17,12 +17,11 @@ namespace Testcase.Infrastructure.Concrete
         private IConfiguration Configuration { get; }  // appsetting dosyasından okumak için
         private TokenOptions TokenOptions { get; }
         private readonly DateTime _accessTokenExpiration;
-
-        public JWTHandler(IConfiguration configuration, TokenOptions tokenOptions, DateTime accessTokenExpiration)
+        public JWTHandler(IConfiguration configuration)
         {
             Configuration = configuration;
-            TokenOptions = tokenOptions;
-            _accessTokenExpiration = accessTokenExpiration;
+            TokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+            _accessTokenExpiration = DateTime.Now.AddMinutes(TokenOptions.AccessTokenExpiration);
         }
 
         public AccessToken CreateToken(TokenRequestModel user, List<OperationClaim> operationClaims = null)
@@ -30,12 +29,13 @@ namespace Testcase.Infrastructure.Concrete
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(TokenOptions.SecurityKey));
             var signingCredential = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var jwt = new JwtSecurityToken(
-                 issuer: TokenOptions.Issuer,
+                issuer: TokenOptions.Issuer,
                 audience: TokenOptions.Audience,
                 expires: _accessTokenExpiration,
                 notBefore: DateTime.Now,
                 claims: SetClaims(user, operationClaims),
-                signingCredentials: signingCredential);
+                signingCredentials: signingCredential
+                );
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
             return new AccessToken()
             {
@@ -43,7 +43,6 @@ namespace Testcase.Infrastructure.Concrete
                 Expiration = _accessTokenExpiration
             };
         }
-
         private IEnumerable<Claim> SetClaims(TokenRequestModel user, List<OperationClaim> operationClaims = null)
         {
             var claims = new List<Claim>();
@@ -52,5 +51,6 @@ namespace Testcase.Infrastructure.Concrete
                 operationClaims.Select(x => x.Name).ToList().ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
             return claims;
         }
+
     }
 }
