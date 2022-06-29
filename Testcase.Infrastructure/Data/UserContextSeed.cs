@@ -26,19 +26,19 @@ namespace Testcase.Infrastructure.Data
                 new Users()
                 {
                    UserName ="testUser1",
-                   Password ="123456789"
-                   
+                   Password ="$2a$11$Qjy8IBQ7x6GgDiAkbKhxpOxdHt6nI3RfjPnwrY.ynCWGxsGmuPpei"
+
                 },
                 new Users()
                 {
                    UserName ="testUser2",
-                   Password ="123456789"
+                   Password ="$2a$11$Qjy8IBQ7x6GgDiAkbKhxpOxdHt6nI3RfjPnwrY.ynCWGxsGmuPpei"
 
                 },
                 new Users()
                 {
                    UserName ="testUser3",
-                   Password ="123456789"
+                   Password ="$2a$11$Qjy8IBQ7x6GgDiAkbKhxpOxdHt6nI3RfjPnwrY.ynCWGxsGmuPpei"
 
                 }
             };

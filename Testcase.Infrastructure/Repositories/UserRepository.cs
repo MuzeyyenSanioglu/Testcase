@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Testcase.Infrastructure.Data.Interfaces;
 using Testcase.User.Domain;
 using Testcase.User.Domain.Repositories;
+using Testcase.User.Domain.Responses;
 
 namespace Testcase.Infrastructure.Repositories
 {
@@ -20,43 +21,145 @@ namespace Testcase.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task Create(Users user)
+        public async Task<APIResponse> CheckUserByExist(string username)
         {
-            await _context.Users.InsertOneAsync(user);
+            APIResponse result = new APIResponse();
+            try
+            {
+                var user = _context.Users.Find(p => p.UserName == username).FirstOrDefaultAsync().Result;
+                if (user != null)
+                    result.AlreadyExist = true;
+                else
+                    result.AlreadyExist = false;
+                result.SetSuccess();
+            }
+            catch (Exception ex)
+            {
+                result.SetFailure(ex);
+            }
+            return result;
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<APIResponse> Create(Users user)
         {
-            var filter = Builders<Users>.Filter.Eq(m => m.UserId, id);
-            DeleteResult deleteResult = await _context.Users.DeleteOneAsync(filter);
-            return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+            APIResponse result = new APIResponse();
+            try
+            {
+                await _context.Users.InsertOneAsync(user);
+                result.SetSuccess();
+            }
+            catch (Exception ex)
+            {
+                result.SetFailure(ex);
+            }
+            return result;
         }
 
-        public async Task<Users> GetUserByUserName(string name)
+        public async Task<APIResponse> Delete(string id)
         {
-            return await _context.Users.Find(p => p.UserName == name ).FirstOrDefaultAsync();
+            APIResponse result = new APIResponse();
+            try
+            {
+                var filter = Builders<Users>.Filter.Eq(m => m.UserId, id);
+                DeleteResult deleteResult = await _context.Users.DeleteOneAsync(filter);
+                if (deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0)
+                    result.SetSuccess();
+                else
+                    result.SetFailure();
+
+            }
+            catch (Exception ex)
+            {
+
+                result.SetFailure(ex);
+            }
+            return result;
         }
 
-        public async Task<Users> GetUserByuserNameandPassword(string username, string password)
+        public async Task<APIResponse<Users>> GetUserByUserName(string name)
         {
-            return await _context.Users.Find(p => p.UserName == username && p.Password == password)
-                .FirstOrDefaultAsync();
+            APIResponse<Users> result = new APIResponse<Users>();
+            try
+            {
+                Users user = await _context.Users.Find(p => p.UserName == name).FirstOrDefaultAsync();
+                result.SetData(user);
+            }
+            catch (Exception ex)
+            {
+
+                result.SetFailure(ex);
+            }
+            return result;
+        }
+                
+
+        public async Task<APIResponse<Users>> GetUserByuserNameandPassword(string username, string password)
+        {
+            APIResponse<Users> result = new APIResponse<Users>();
+            try
+            {
+                Users user = await _context.Users.Find(p => p.UserName == username && p.Password == password)
+                        .FirstOrDefaultAsync();
+                result.SetData(user);
+            }
+            catch (Exception ex)
+            {
+
+                result.SetFailure(ex);
+            }
+            return result;
         }
 
-        public async Task<IEnumerable<Users>> GetUsers()
+        public async Task<APIResponse<IEnumerable<Users>>> GetUsers()
         {
-            return await _context.Users.Find(P => true).ToListAsync();
+            APIResponse<IEnumerable<Users>> result = new APIResponse<IEnumerable<Users>>();
+
+            try
+            {
+                IEnumerable<Users> users =  await _context.Users.Find(P => true).ToListAsync();
+                result.SetData(users);
+            }
+            catch (Exception ex)
+            {
+
+                result.SetFailure(ex);
+            }
+            return result;
         }
 
-        public async Task<Users> GetUsers(string id)
+        public async Task<APIResponse<Users>> GetUsers(string id)
         {
-            return await _context.Users.Find(p => p.UserId == id).FirstOrDefaultAsync();
+            APIResponse < Users > result = new APIResponse<Users>();
+            try
+            {
+                Users user = await _context.Users.Find(p => p.UserId == id).FirstOrDefaultAsync();
+                result.SetData(user);
+            }
+            catch (Exception ex)
+            {
+
+                result.SetFailure(ex);
+            }
+            return result;
         }
 
-        public async Task<bool> Update(Users user)
+        public async Task<APIResponse> Update(Users user)
         {
-            var updateResult = await _context.Users.ReplaceOneAsync(filter: g => g.UserId == user.UserId, replacement: user);
-            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+            APIResponse result = new APIResponse();
+            try
+            {
+                var updateResult = await _context.Users.ReplaceOneAsync(filter: g => g.UserId == user.UserId, replacement: user);
+                 
+                if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
+                    result.SetSuccess();
+                else
+                    result.SetFailure();
+            }
+            catch (Exception ex)
+            {
+                result.SetFailure(ex);
+            }
+            return result;
         }
     }
 }

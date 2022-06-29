@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Testcase.API.Responses
+namespace Testcase.User.Domain.Responses
 {
     public class APIResponse
     {

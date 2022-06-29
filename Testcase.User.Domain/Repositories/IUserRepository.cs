@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testcase.User.Domain.Responses;
 
 namespace Testcase.User.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<Users>> GetUsers();
-        Task<Users> GetUsers(string id);
-        Task<Users> GetUserByUserName(string name);
-        Task<Users> GetUserByuserNameandPassword(string username, string password);
-        Task Create(Users user);
-        Task<bool> Update(Users user);
-        Task<bool> Delete(string id);
+        Task<APIResponse<IEnumerable<Users>>> GetUsers();
+        Task<APIResponse<Users>> GetUsers(string id);
+        Task<APIResponse<Users>> GetUserByUserName(string name);
+        Task<APIResponse> CheckUserByExist(string username);
+        Task<APIResponse<Users>> GetUserByuserNameandPassword(string username, string password);
+        Task<APIResponse> Create(Users user);
+        Task<APIResponse> Update(Users user);
+        Task<APIResponse> Delete(string id);
     }
     
 }
