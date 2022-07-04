@@ -1,8 +1,6 @@
 version: '3.4'
 
 services:
-  nginx:
-    image: nginx
   testcasedb:
     image: mongo
 
