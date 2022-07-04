@@ -26,6 +26,7 @@ namespace TestCase.ICsvInfrastructure.Repositories
             try
             {
                await  _context.CVSs.InsertOneAsync(csv);
+               result.ObjectId = csv.id;
                result.SetSuccess();    
             }
             catch (Exception ex)

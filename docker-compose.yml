@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  nginx:
+    image: nginx
+  testcasedb:
+    image: mongo
+
+  testcaseappointmentsapi:
+    image: ${DOCKER_REGISTRY-}testcaseappointmentsapi
+    build:
+      context: .
+      dockerfile: Testcase.Appointments.API\Dockerfile
+  
+  testcasecsvapi:
+    image: ${DOCKER_REGISTRY-}testcasecsvapi
+    build:
+      context: .
+      dockerfile: Testcase.CSV.API/Dockerfile
+    
+
+
+  testcaseapi:
+    image: ${DOCKER_REGISTRY-}testcaseapi
+    build:
+      context: .
+      dockerfile: Testcase.API/Dockerfile
+

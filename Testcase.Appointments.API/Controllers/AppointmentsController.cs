@@ -24,7 +24,7 @@ namespace Testcase.Appointments.API.Controllers
             _appoinmentRepository = appoinmentRepository;
         }
         [ProducesResponseType(typeof(APIResponse<IEnumerable<AppoinmentsDto>>), StatusCodes.Status200OK)]
-        [HttpGet]
+        [HttpGet("{userid}")]
         public IActionResult GetAppointmentsByUser(string userId)
         {
             APIResponse<IEnumerable<AppoinmentsDto>> result = new APIResponse<IEnumerable<AppoinmentsDto>>();
@@ -58,6 +58,18 @@ namespace Testcase.Appointments.API.Controllers
                 return NotFound(entityResponse.ErrorMessage);
             result.SetData(appoinment);
             return Ok(result);
+        }
+        [ProducesResponseType(typeof(APIResponse<IEnumerable<AppoinmentsDto>>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            APIResponse<IEnumerable<AppoinmentsDto>> result = new APIResponse<IEnumerable<AppoinmentsDto>>();
+            APIResponse<IEnumerable<Appointment>> appoinments = _appoinmentRepository.GetAll().Result;
+            if (!appoinments.IsSuccess)
+                return NotFound(appoinments.ErrorMessage);
+            result.SetData(_mapper.Map<IEnumerable<Appointment>, IEnumerable<AppoinmentsDto>>(appoinments.Data));
+            return Ok(result);
+
         }
     }
 }

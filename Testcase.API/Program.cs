@@ -22,17 +22,17 @@ builder.Services.AddAuthConfiguration(builder.Configuration);
 builder.Services.AddSwaggerConfiguration(builder.Configuration);
 builder.Services.AddScoped<ITokenHandler, JWTHandler>();
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint(url: String.Format(builder.Configuration.GetSection("Swagger:UseSwaggerUI:SwaggerEndpoint").Value, builder.Configuration.GetSection("Swagger:SwaggerName").Value),
-        name: "Version CoreSwaggerWebAPI-1");
 
-});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-  
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint(url: String.Format(builder.Configuration.GetSection("Swagger:UseSwaggerUI:SwaggerEndpoint").Value, builder.Configuration.GetSection("Swagger:SwaggerName").Value),
+            name: "Version CoreSwaggerWebAPI-1");
+
+    });
 }
 app.MapControllers();
 

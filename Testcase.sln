@@ -15,19 +15,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.API", "Testcase.AP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestCase.Appointments", "TestCase.Appointments", "{F7545726-F309-47D1-92E7-C083032E12EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testcase.Appointments.API", "Testcase.Appointments.API\Testcase.Appointments.API.csproj", "{2195C523-A2A5-42C7-A940-76E8C4397AC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.Appointments.API", "Testcase.Appointments.API\Testcase.Appointments.API.csproj", "{2195C523-A2A5-42C7-A940-76E8C4397AC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testcase.Appointments.Domain", "Testcase.Appointments.Domain\Testcase.Appointments.Domain.csproj", "{16B6B39A-91C8-473A-B9DE-4F554BB00761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.Appointments.Domain", "Testcase.Appointments.Domain\Testcase.Appointments.Domain.csproj", "{16B6B39A-91C8-473A-B9DE-4F554BB00761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testcase.Appointments.Infrastructure", "Testcase.Appointments.Infrastructure\Testcase.Appointments.Infrastructure.csproj", "{AC72E833-9D87-4969-998A-820CC05294A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.Appointments.Infrastructure", "Testcase.Appointments.Infrastructure\Testcase.Appointments.Infrastructure.csproj", "{AC72E833-9D87-4969-998A-820CC05294A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestCase.CSV", "TestCase.CSV", "{5C2E6650-3593-4BF4-9052-EE574189D2B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testcase.CSV.API", "Testcase.CSV.API\Testcase.CSV.API.csproj", "{DAD1AA72-8EE2-4DE2-B155-096926F0915C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.CSV.API", "Testcase.CSV.API\Testcase.CSV.API.csproj", "{DAD1AA72-8EE2-4DE2-B155-096926F0915C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testcase.CSV.Domain", "Testcase.CSV.Domain\Testcase.CSV.Domain.csproj", "{C3DDD70C-CC3C-4A3F-83FF-05EBCC440FE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.CSV.Domain", "Testcase.CSV.Domain\Testcase.CSV.Domain.csproj", "{C3DDD70C-CC3C-4A3F-83FF-05EBCC440FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCase.ICsvInfrastructure", "TestCase.ICsvInfrastructure\TestCase.ICsvInfrastructure.csproj", "{932A3B58-439D-4901-A283-AA803810E44F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCase.ICsvInfrastructure", "TestCase.ICsvInfrastructure\TestCase.ICsvInfrastructure.csproj", "{932A3B58-439D-4901-A283-AA803810E44F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testcase.CSV.Application", "Testcase.CSV.Application\Testcase.CSV.Application.csproj", "{52AD7D34-F992-4483-891A-DA8C533C2553}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5D8256DE-D922-42AB-91FA-2390832589AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,14 @@ Global
 		{932A3B58-439D-4901-A283-AA803810E44F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{932A3B58-439D-4901-A283-AA803810E44F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{932A3B58-439D-4901-A283-AA803810E44F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52AD7D34-F992-4483-891A-DA8C533C2553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52AD7D34-F992-4483-891A-DA8C533C2553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52AD7D34-F992-4483-891A-DA8C533C2553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52AD7D34-F992-4483-891A-DA8C533C2553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D8256DE-D922-42AB-91FA-2390832589AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D8256DE-D922-42AB-91FA-2390832589AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D8256DE-D922-42AB-91FA-2390832589AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D8256DE-D922-42AB-91FA-2390832589AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +100,7 @@ Global
 		{DAD1AA72-8EE2-4DE2-B155-096926F0915C} = {5C2E6650-3593-4BF4-9052-EE574189D2B9}
 		{C3DDD70C-CC3C-4A3F-83FF-05EBCC440FE7} = {5C2E6650-3593-4BF4-9052-EE574189D2B9}
 		{932A3B58-439D-4901-A283-AA803810E44F} = {5C2E6650-3593-4BF4-9052-EE574189D2B9}
+		{52AD7D34-F992-4483-891A-DA8C533C2553} = {5C2E6650-3593-4BF4-9052-EE574189D2B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {84E1342C-DB9B-4343-BF58-F998C7F0117A}

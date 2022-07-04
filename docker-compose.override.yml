@@ -1,0 +1,62 @@
+version: '3.4'
+
+services:
+
+  testcasedb:
+    container_name: testcasedb
+    restart: always
+    volumes:
+       - ${WEBAPP_STORAGE_HOME}/site:/data/db
+    ports:
+       - "27017:27017"
+    networks:
+      - testcase
+
+
+  testcaseappointmentsapi:
+    container_name: testcaseappointmentsapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "AppoinmentsSettings:ConnectionString=mongodb://testcasedb:27017"
+    depends_on:
+        - testcasedb
+        - testcaseapi
+    ports:
+      - "8083:80"
+    networks:
+      - testcase
+
+
+  testcasecsvapi:
+    container_name: testcasecsvapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CSVDatabaseSettings:ConnectionString=mongodb://testcasedb:27017"
+      - "ApplicationSettings:AppoinmentServiceUrl=http://testcaseappointmentsapi:8083/api/v1/Appointments"
+      - "ApplicationSettings:AuthUrl=http://testcaseapi:8081/api/v1/Account/login"
+    depends_on:
+        - testcasedb
+        - testcaseapi
+        - testcaseappointmentsapi
+    ports:
+      - "8082:80"
+    
+     
+
+
+  testcaseapi:
+    container_name: testcaseapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "UserDatabaseSettings:ConnectionString=mongodb://testcasedb:27017"
+    depends_on:
+        - testcasedb
+    ports:
+      - "8081:80"
+    networks:
+      - testcase
+
+networks:
+  testcase:
+   driver: bridge
+   external: true
