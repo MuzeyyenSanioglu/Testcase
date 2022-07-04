@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Testcase.Appointments.API.DTOs;
+using Testcase.Appointments.API.Services;
 using Testcase.Appointments.Domain;
 using Testcase.Appointments.Domain.Repositories;
 using Testcase.Appointments.Domain.Response;
@@ -17,11 +18,13 @@ namespace Testcase.Appointments.API.Controllers
 
         private readonly IMapper _mapper;
         private readonly IAppointmentRepository _appoinmentRepository;
+        private readonly IUserServices _userServices;
 
-        public AppointmentsController(IMapper mapper, IAppointmentRepository appoinmentRepository)
+        public AppointmentsController(IMapper mapper, IAppointmentRepository appoinmentRepository, IUserServices userServices)
         {
             _mapper = mapper;
             _appoinmentRepository = appoinmentRepository;
+            _userServices = userServices;
         }
         [ProducesResponseType(typeof(APIResponse<IEnumerable<AppoinmentsDto>>), StatusCodes.Status200OK)]
         [HttpGet("{userid}")]
@@ -39,11 +42,14 @@ namespace Testcase.Appointments.API.Controllers
         public IActionResult CreateAppoinments(AppoinmentsDto appoinment)
         {
             APIResponse<AppoinmentsDto> result = new APIResponse<AppoinmentsDto>();
-            int endhour = appoinment.StartHour == 24 ? 1 : appoinment.StartHour + 1;
-            string timeSlot = appoinment.StartHour.ToString() + "-" + endhour.ToString();
+            var existUser = _userServices.GetUserById(appoinment.UserId);
+            if (!existUser.IsSuccess)
+                return Ok("User not found");
+            DateTime endhour = appoinment.AppoinmentStartDate.AddHours(1);
+            string timeSlot = appoinment.AppoinmentStartDate.ToString("HH:mm") + "-" + endhour.ToString("HH:mm");
             #region Check Appointment
-            APIResponse existsAppoinment = _appoinmentRepository.CheckUserAppointment(appoinment.UserId,appoinment.Date,timeSlot).Result;
-            if(existsAppoinment.AlreadyExist)
+            APIResponse existsAppoinment = _appoinmentRepository.CheckUserAppointment(appoinment.UserId, appoinment.AppoinmentStartDate, timeSlot).Result;
+            if (existsAppoinment.AlreadyExist)
             {
                 result.SetFailure("Username  have another appointment.");
                 return Ok(result);

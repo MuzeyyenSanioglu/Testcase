@@ -10,7 +10,7 @@ namespace Testcase.User.Domain.Repositories
     public interface IUserRepository
     {
         Task<APIResponse<IEnumerable<Users>>> GetUsers();
-        Task<APIResponse<Users>> GetUsers(string id);
+        Task<APIResponse<Users>> GetUser(string id);
         Task<APIResponse<Users>> GetUserByUserName(string name);
         Task<APIResponse> CheckUserByExist(string username);
         Task<APIResponse<Users>> GetUserByuserNameandPassword(string username, string password);

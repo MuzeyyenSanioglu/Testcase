@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Testcase.API.DTOs;
 using Testcase.Infrastructure.Concrete.Interfaces;
@@ -49,7 +51,7 @@ namespace Testcase.API.Controllers
 
             return Ok(token);
         }
-
+       
         [ProducesResponseType(typeof(APIResponse<UserDto>), StatusCodes.Status200OK)]
         [HttpPost("register")]
         public IActionResult Register(UserDto user)
@@ -74,12 +76,29 @@ namespace Testcase.API.Controllers
             return Ok(result);
 
         }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(APIResponse<UserDto>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetUserByUserName(string userName)
         {
             APIResponse<UserDto> result = new APIResponse<UserDto>();
             APIResponse<Users> user = _userRepository.GetUserByUserName(userName).Result;
+            result.ObjectId = user.Data.UserId;
+            if (!user.IsSuccess)
+                return NotFound(user.ErrorMessage);
+            if (user.Data == null)
+                return Unauthorized("invalid username.");
+
+            result.SetData(_mapper.Map<Users, UserDto>(user.Data));
+            return Ok(result);
+        }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(APIResponse<UserDto>), StatusCodes.Status200OK)]
+        [HttpGet("{id}")]
+        public IActionResult GetUserById(string id)
+        {
+            APIResponse<UserDto> result = new APIResponse<UserDto>();
+            APIResponse<Users> user = _userRepository.GetUser(id).Result;
             result.ObjectId = user.Data.UserId;
             if (!user.IsSuccess)
                 return NotFound(user.ErrorMessage);

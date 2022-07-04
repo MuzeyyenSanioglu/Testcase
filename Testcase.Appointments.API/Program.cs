@@ -1,10 +1,12 @@
 using Microsoft.OpenApi.Models;
 using Testcase.Appointments.API.Helper;
+using Testcase.Appointments.API.Services;
 using Testcase.Appointments.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddAuthConfiguration(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));

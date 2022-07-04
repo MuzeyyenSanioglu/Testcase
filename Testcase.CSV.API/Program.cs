@@ -1,4 +1,6 @@
 using Microsoft.OpenApi.Models;
+using Testcase.Appointments.API.Helper;
+using Testcase.CSV.API.Helper;
 using Testcase.CSV.Application;
 using TestCase.ICsvInfrastructure;
 
@@ -9,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddApplications(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAuthConfiguration(builder.Configuration);
+builder.Services.AddSwaggerConfiguration(builder.Configuration);
 #region Swagger Dependencies
 
 builder.Services.AddEndpointsApiExplorer();
@@ -35,10 +39,9 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "CSV API ");
     });
 }
-
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
+app.UseAuthentication();
+app.UseHttpsRedirection();
 
 app.MapControllers();
 

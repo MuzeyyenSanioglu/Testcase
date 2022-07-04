@@ -21,7 +21,7 @@ namespace Testcase.CSV.Application.Services
         public CSVService(ICSVRepository csvRepository , IApplicationSettings settings)
         {
             _csvRepository = csvRepository;
-            filePath = settings.FilePath;
+            filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "CSVFiles"); ;
         }
 
         public APIResponse<List<string>> GetCSVFileName()

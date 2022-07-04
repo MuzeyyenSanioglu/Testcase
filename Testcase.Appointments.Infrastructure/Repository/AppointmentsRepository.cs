@@ -19,21 +19,32 @@ namespace Testcase.Appointments.Infrastructure
            APIResponse result = new APIResponse();
             try
             {
-                Appointment appointment = await _context.Appointments
-                    .Find(p => p.UserId == userId && p.Date == apointmentDate && p.TimeSlot == timeZone)
-                    .FirstOrDefaultAsync();
-                if (appointment != null)
+                List<Appointment> appointment = await _context.Appointments
+                    .Find(p => p.UserId == userId)
+                    .ToListAsync();
+               if(appointment.Count()<0)
+                {
+                    result.SetFailure();
                     result.AlreadyExist = true;
-                else
-                    result.AlreadyExist = false;
+                    return result;
+                }
+               List<string> timeZones =  appointment.Select(s => s.TimeSlot.Split("-")[1]).ToList();
+               if(timeZones.Any(s => Convert.ToDateTime(s).Hour > apointmentDate.Hour && Convert.ToDateTime(s).Minute > apointmentDate.Minute ))
+               {
+                    result.SetFailure();
+                    result.AlreadyExist = true;
+                    return result;
+                }
+                result.AlreadyExist = false;
                 result.SetSuccess();
-
+                return result;
             }
             catch (Exception ex)
             {
                 result.SetFailure(ex);
+                return result;
             }
-            return result;
+            
         }
 
         public async Task<APIResponse> Create(Domain.Appointment appointments)

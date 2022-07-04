@@ -9,7 +9,6 @@ namespace Testcase.CSV.Application.Settings
 {
     public class ApplicationSettings : IApplicationSettings
     {
-        public string FilePath { get; set; } = null!;
         public string AppoinmentServiceUrl { get; set; } = null!;
         public string AuthUrl { get; set; } = null!;
         public string ServiceUsername { get; set; } = null!;

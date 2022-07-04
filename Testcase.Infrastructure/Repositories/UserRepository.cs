@@ -127,13 +127,15 @@ namespace Testcase.Infrastructure.Repositories
             return result;
         }
 
-        public async Task<APIResponse<Users>> GetUsers(string id)
+        public async Task<APIResponse<Users>> GetUser(string id)
         {
             APIResponse < Users > result = new APIResponse<Users>();
             try
             {
                 Users user = await _context.Users.Find(p => p.UserId == id).FirstOrDefaultAsync();
-                result.SetData(user);
+                if (user != null)
+                    result.SetData(user);
+                else result.SetFailure("User Not Found");
             }
             catch (Exception ex)
             {
