@@ -9,6 +9,6 @@ namespace Testcase.Appointments.API.DTOs
         public string UserId { get; set; } = null!;
 
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy HH:mm:ss}")]
-        public DateTime AppoinmentStartDate { get; set; }
+        public DateTime Date { get; set; }
     }
 }

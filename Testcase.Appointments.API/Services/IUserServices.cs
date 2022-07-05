@@ -1,9 +1,10 @@
-﻿using Testcase.Appointments.Domain.Response;
+﻿using Newtonsoft.Json.Linq;
+using Testcase.Appointments.Domain.Response;
 
 namespace Testcase.Appointments.API.Services
 {
     public interface IUserServices
     {
-        APIResponse GetUserById(string id);
+        APIResponse<JObject> GetUserById(string id);
     }
 }

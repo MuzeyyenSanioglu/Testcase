@@ -43,9 +43,9 @@ namespace Testcase.Appointments.API.Services
             }
             return result;
         }
-        public APIResponse GetUserById(string id)
+        public APIResponse<JObject> GetUserById(string id)
         {
-            APIResponse results = new APIResponse();
+            APIResponse<JObject> results = new APIResponse<JObject>();
             string baseUrl = _settings.UserServiceUrl.ToString() + id;
             APIResponse<string> auth = Auth();
             if (!auth.IsSuccess)
@@ -53,14 +53,14 @@ namespace Testcase.Appointments.API.Services
                 results.SetFailure("System error : Token  " + auth.ErrorMessage);
                 return results;
             }
-            APIResponse result = HttpRequestBuilder.GetInstance(baseUrl).AddAuthorization(auth.Data).Get().SendAsync<JObject>().Result;
+            APIResponse<JObject> result = HttpRequestBuilder.GetInstance(baseUrl).Get().AddAuthorization(auth.Data).SendAsync<JObject>().Result;
             if (!result.IsSuccess)
             {
                 results.SetFailure(result.ErrorMessage + "System Error :  Colud not find exists data.");
                 return results;
             }
-            
 
+            results.SetData(result.Data);
             return results;
         }
     }

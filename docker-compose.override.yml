@@ -17,6 +17,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "AppoinmentsSettings:ConnectionString=mongodb://testcasedb:27017"
+      - "ApplicationSettings:userServiceUrl=http://testcaseapi/api/v1/Account/"
     depends_on:
         - testcasedb
         - testcaseapi

@@ -16,21 +16,27 @@ namespace Testcase.Appointments.Infrastructure
 
         public async Task<APIResponse> CheckUserAppointment(string userId, DateTime apointmentDate, string timeZone)
         {
-           APIResponse result = new APIResponse();
+            APIResponse result = new APIResponse();
             try
             {
                 List<Appointment> appointment = await _context.Appointments
                     .Find(p => p.UserId == userId)
                     .ToListAsync();
-               if(appointment.Count()<0)
+                if (appointment.Count() < 0)
+                {
+                    result.SetSuccess();
+                    result.AlreadyExist = false;
+                    return result;
+                }
+                if (appointment.Any(s => s.Date == apointmentDate))
                 {
                     result.SetFailure();
                     result.AlreadyExist = true;
                     return result;
                 }
-               List<string> timeZones =  appointment.Select(s => s.TimeSlot.Split("-")[1]).ToList();
-               if(timeZones.Any(s => Convert.ToDateTime(s).Hour > apointmentDate.Hour && Convert.ToDateTime(s).Minute > apointmentDate.Minute ))
-               {
+                List<string> timeZones = appointment.Where(s => s.Date.Date == apointmentDate.Date).Select(s => s.TimeSlot.Split("-")[1]).ToList();
+                if (timeZones.Any(s => Convert.ToDateTime(s).Hour >= apointmentDate.Hour && Convert.ToDateTime(s).Minute >= apointmentDate.Minute))
+                {
                     result.SetFailure();
                     result.AlreadyExist = true;
                     return result;
@@ -44,7 +50,7 @@ namespace Testcase.Appointments.Infrastructure
                 result.SetFailure(ex);
                 return result;
             }
-            
+
         }
 
         public async Task<APIResponse> Create(Domain.Appointment appointments)

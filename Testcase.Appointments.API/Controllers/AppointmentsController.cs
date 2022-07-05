@@ -45,18 +45,19 @@ namespace Testcase.Appointments.API.Controllers
             var existUser = _userServices.GetUserById(appoinment.UserId);
             if (!existUser.IsSuccess)
                 return Ok("User not found");
-            DateTime endhour = appoinment.AppoinmentStartDate.AddHours(1);
-            string timeSlot = appoinment.AppoinmentStartDate.ToString("HH:mm") + "-" + endhour.ToString("HH:mm");
+            DateTime endhour = appoinment.Date.AddHours(1);
+            string timeSlot = appoinment.Date.ToString("HH:mm") + "-" + endhour.ToString("HH:mm");
             #region Check Appointment
-            APIResponse existsAppoinment = _appoinmentRepository.CheckUserAppointment(appoinment.UserId, appoinment.AppoinmentStartDate, timeSlot).Result;
+            APIResponse existsAppoinment = _appoinmentRepository.CheckUserAppointment(appoinment.UserId, appoinment.Date, timeSlot).Result;
             if (existsAppoinment.AlreadyExist)
             {
-                result.SetFailure("Username  have another appointment.");
+                result.SetFailure("User have another appointment.");
                 return Ok(result);
             }
 
             #endregion
             Appointment appointmentEntitiy = _mapper.Map<AppoinmentsDto, Appointment>(appoinment);
+            appointmentEntitiy.Date = appoinment.Date;
             appointmentEntitiy.TimeSlot = timeSlot;
             APIResponse entityResponse = _appoinmentRepository.Create(appointmentEntitiy).Result;
             result.ObjectId = appointmentEntitiy.AppointmetsId;
@@ -67,7 +68,7 @@ namespace Testcase.Appointments.API.Controllers
         }
         [ProducesResponseType(typeof(APIResponse<IEnumerable<AppoinmentsDto>>), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult GetAppoinments()
         {
             APIResponse<IEnumerable<AppoinmentsDto>> result = new APIResponse<IEnumerable<AppoinmentsDto>>();
             APIResponse<IEnumerable<Appointment>> appoinments = _appoinmentRepository.GetAll().Result;
